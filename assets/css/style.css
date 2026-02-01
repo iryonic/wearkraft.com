@@ -105,7 +105,7 @@ body.no-scroll {
     border: var(--border-width) solid #000000 !important;
     box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1) !important;
     border-radius: 20px !important;
-    z-index: 9999 !important;
+    z-index: 900 !important;
     padding: 0 10px !important;
 }
 

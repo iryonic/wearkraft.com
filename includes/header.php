@@ -189,10 +189,10 @@
     </header>
 
     <!-- Mobile Menu Drawer (Hidden by default) -->
-    <div class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300" id="mobile-menu-overlay">
+    <div class="fixed inset-0 z-[9990] pointer-events-none opacity-0 transition-opacity duration-300" id="mobile-menu-overlay">
         <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
     </div>
-    <div class="fixed top-0 left-0 h-full w-[80vw] max-w-[300px] bg-white z-[51] transform -translate-x-full transition-transform duration-300 flex flex-col border-r-[3px] border-black" id="mobile-menu-drawer">
+    <div class="fixed top-0 left-0 h-full w-[80vw] max-w-[300px] bg-white z-[9995] transform -translate-x-full transition-transform duration-300 flex flex-col border-r-[3px] border-black" id="mobile-menu-drawer">
          <div class="p-6 border-b-[3px] border-black flex items-center justify-between bg-neon-yellow">
             <span class="font-black text-xl uppercase tracking-tighter">Menu</span>
             <button id="close-mobile-menu" class="w-10 h-10 bg-white border-[3px] border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
@@ -233,10 +233,10 @@
     </div>
 
     <!-- Sidebar Cart (Moved from Footer) -->
-    <div class="fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300" id="cart-overlay">
+    <div class="fixed inset-0 z-[9990] pointer-events-none opacity-0 transition-opacity duration-300" id="cart-overlay">
         <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
     </div>
-    <div class="fixed top-0 right-0 h-full w-[100vw] sm:w-[450px] bg-white z-[101] transform translate-x-full transition-transform duration-300 flex flex-col border-l-[3px] border-black shadow-[-10px_0px_0px_0px_rgba(0,0,0,0.1)]" id="side-cart">
+    <div class="fixed top-0 right-0 h-full w-[100vw] sm:w-[450px] bg-white z-[9995] transform translate-x-full transition-transform duration-300 flex flex-col border-l-[3px] border-black shadow-[-10px_0px_0px_0px_rgba(0,0,0,0.1)]" id="side-cart">
         <div class="p-6 border-b-[3px] border-black flex items-center justify-between bg-white relative z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-neon-green border-[3px] border-black rounded-xl flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
