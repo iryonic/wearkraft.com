@@ -120,15 +120,22 @@
             <!-- Actions -->
             <div class="flex items-center gap-6">
                 <!-- Search -->
-                <!-- Search -->
-                <button id="open-search" class="w-14 h-14 bg-white border-[3px] border-black rounded-2xl flex items-center justify-center hover:bg-neon-yellow transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none group">
+                <button id="open-search" class="hidden lg:flex w-14 h-14 bg-white border-[3px] border-black rounded-2xl items-center justify-center hover:bg-neon-yellow transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none group">
                     <i data-lucide="search" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
                 </button>
 
                 <!-- Cart -->
-                <a href="javascript:void(0)" id="open-cart" class="w-14 h-14 bg-white border-[3px] border-black rounded-2xl flex items-center justify-center relative group hover:bg-neon-green transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
+                <a href="javascript:void(0)" id="open-cart" class="hidden lg:flex w-14 h-14 bg-white border-[3px] border-black rounded-2xl items-center justify-center relative group hover:bg-neon-green transition-all shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
                     <i data-lucide="shopping-bag" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-accent text-white border-[2px] border-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center font-black">
+                        <?php echo get_cart_count(); ?>
+                    </span>
+                </a>
+                
+                <!-- Mobile Cart Indicator (Simple Icon) -->
+                <a href="cart.php" class="lg:hidden relative mr-2">
+                     <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                     <span class="absolute -top-2 -right-2 bg-accent text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-black">
                         <?php echo get_cart_count(); ?>
                     </span>
                 </a>
