@@ -1,5 +1,5 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/db.php';
 
 function get_setting($key) {
     $result = db_fetch_one("SELECT setting_value FROM settings WHERE setting_key = ?", [$key]);
@@ -45,6 +45,26 @@ function get_cart_count() {
         $result = db_fetch_one("SELECT SUM(quantity) as count FROM cart WHERE session_id = ?", [$session_id]);
     }
     return $result['count'] ?? 0;
+}
+
+function merge_cart($user_id) {
+    $session_id = session_id();
+    
+    // Get guest items
+    $guest_items = db_fetch_all("SELECT * FROM cart WHERE session_id = ? AND user_id IS NULL", [$session_id]);
+    
+    foreach ($guest_items as $item) {
+        // Check if item already exists in user cart
+        $existing = db_fetch_one("SELECT id, quantity FROM cart WHERE user_id = ? AND product_id = ?", [$user_id, $item['product_id']]);
+        
+        if ($existing) {
+            $new_qty = $existing['quantity'] + $item['quantity'];
+            db_query("UPDATE cart SET quantity = ? WHERE id = ?", [$new_qty, $existing['id']]);
+            db_query("DELETE FROM cart WHERE id = ?", [$item['id']]);
+        } else {
+            db_query("UPDATE cart SET user_id = ?, session_id = NULL WHERE id = ?", [$user_id, $item['id']]);
+        }
+    }
 }
 
 // SEO Helpers

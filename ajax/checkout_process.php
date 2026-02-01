@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session_id = session_id();
     
     // Validate inputs
-    $required = ['first_name', 'last_name', 'address', 'city', 'zip', 'phone', 'email'];
+    $required = ['first_name', 'last_name', 'address', 'city', 'zip', 'phone', 'email', 'payment'];
     foreach($required as $field) {
         if(empty($_POST[$field])) {
-            echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
+            echo json_encode(['success' => false, 'message' => "Please fill all required fields ($field)"]);
             exit;
         }
     }

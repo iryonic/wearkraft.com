@@ -1,6 +1,6 @@
 <?php
 // WearKraft.com Configuration
-require_once 'security.php';
+require_once __DIR__ . '/security.php';
 secure_session_start();
 
 
@@ -10,7 +10,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1'
     define('DB_USER', 'root');
     define('DB_PASS', '');
     define('DB_NAME', 'wearkraft_db');
-    define('SITE_URL', 'http://localhost/wearkraft.com');
+    define('SITE_URL', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/wearkraft.com");
 } else {
     // Live Server
     define('DB_HOST', 'localhost');

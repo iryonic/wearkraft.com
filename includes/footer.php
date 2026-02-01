@@ -79,8 +79,8 @@
             <span class="text-[9px] font-black uppercase tracking-tighter">Drops</span>
         </a>
         
-        <!-- Center Action -->
-        <a href="<?php echo SITE_URL; ?>/shop.php" class="relative -mt-10 group">
+        <!-- Center Action (Open Cart) -->
+        <a href="javascript:void(0)" onclick="toggleCart(true)" class="relative -mt-10 group">
             <div class="w-16 h-16 bg-black text-white rounded-2xl border-[3px] border-black flex items-center justify-center shadow-[3px_3px_0px_0px_#FF6B00] group-active:translate-x-0.5 group-active:translate-y-0.5 group-active:shadow-none transition-all">
                 <i data-lucide="plus" class="w-8 h-8 group-hover:rotate-90 transition-transform"></i>
             </div>

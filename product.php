@@ -479,18 +479,17 @@ $bulk_pricing = db_fetch_all("SELECT * FROM bulk_pricing WHERE product_id = ? OR
         lucide.createIcons();
 
         // Use the centralized Cart object
-        if (typeof Cart !== 'undefined') {
-            Cart.addToCart(productId, quantity, options);
+        if (typeof window.Cart !== 'undefined') {
+            window.Cart.addToCart(productId, quantity, options);
             
-            // Revert button after short delay (the Cart object handles success toast/sidebar opening)
+            // Revert button after short delay
             setTimeout(() => {
                 btn.innerHTML = originalContent;
-                lucide.createIcons();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
             }, 1000);
         } else {
             console.error('Cart JS not loaded');
             btn.innerHTML = 'Error';
-        }
         }
     });
 

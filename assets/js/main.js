@@ -107,26 +107,60 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openSearchBtn) openSearchBtn.addEventListener('click', () => toggleSearch(true));
     if (closeSearchBtn) closeSearchBtn.addEventListener('click', () => toggleSearch(false));
 
+    // Global Key Listener (Escape to close)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            toggleCart(false);
+            toggleSearch(false);
+            toggleMobileMenu(false);
+        }
+    });
+
     // Live Search Logic
     let searchTimeout;
+    const searchLoader = document.getElementById('search-bar-loader');
+
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
-            const query = e.target.value;
+            const query = e.target.value.trim();
+
             if (query.length < 2) {
                 if (searchResults) searchResults.innerHTML = '';
+                if (searchLoader) searchLoader.style.width = '0%';
                 return;
             }
 
+            // Show loading state
+            if (searchLoader) searchLoader.style.width = '30%';
+
             searchTimeout = setTimeout(() => {
                 const apiUrl = window.SITE_URL ? `${window.SITE_URL}/ajax/search_handler.php` : '/ajax/search_handler.php';
+
+                if (searchLoader) searchLoader.style.width = '70%';
+
                 fetch(`${apiUrl}?q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         renderSearchResults(data);
+                        if (searchLoader) searchLoader.style.width = '100%';
+                        setTimeout(() => { if (searchLoader) searchLoader.style.width = '0%'; }, 500);
                     })
-                    .catch(err => console.error('Search error:', err));
+                    .catch(err => {
+                        console.error('Search error:', err);
+                        if (searchLoader) searchLoader.style.width = '0%';
+                    });
             }, 300);
+        });
+
+        // Handle Enter key
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(searchTimeout);
+                // Trigger immediate search (or redirect to search results page if you had one)
+                searchInput.dispatchEvent(new Event('input'));
+            }
         });
     }
 

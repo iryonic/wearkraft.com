@@ -36,8 +36,8 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-2">
                                 <label class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Email Address</label>
-                                <input type="email" value="<?php echo $user['email'] ?? ''; ?>" 
-                                       class="w-full bg-slate-50 border border-slate-100 h-14 rounded-2xl px-6 focus:outline-none focus:border-primary transition-colors font-medium" placeholder="your@email.com">
+                                <input type="email" name="email" value="<?php echo $user['email'] ?? ''; ?>" 
+                                       class="w-full bg-slate-50 border border-slate-100 h-14 rounded-2xl px-6 focus:outline-none focus:border-primary transition-colors font-medium" placeholder="your@email.com" required>
                             </div>
                             <div class="md:col-span-2">
                                 <label class="flex items-center gap-3 cursor-pointer">
@@ -117,10 +117,10 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                             Payment Method
                         </h2>
 
-                        <div class="space-y-4">
-                            <label class="flex items-center justify-between p-6 border-[3px] border-black bg-neon-yellow/10 rounded-[28px] cursor-pointer shadow-[4px_4px_0px_0px_#000] relative overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#000]">
+                        <div class="space-y-4" id="payment-options">
+                            <label class="flex items-center justify-between p-6 border-[3px] border-black bg-neon-yellow/10 rounded-[28px] cursor-pointer shadow-[4px_4px_0px_0px_#000] relative overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#000]" data-type="razorpay">
                                 <div class="flex items-center gap-4 z-10">
-                                    <div class="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center bg-white">
+                                    <div class="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center bg-white indicator">
                                         <div class="w-3 h-3 bg-black rounded-full"></div>
                                     </div>
                                     <div class="flex flex-col">
@@ -134,9 +134,9 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                                 <input type="radio" name="payment" value="razorpay" checked class="hidden">
                             </label>
 
-                            <label class="flex items-center justify-between p-6 border-[3px] border-slate-200 rounded-[28px] cursor-pointer hover:border-black hover:bg-slate-50 transition-all">
+                            <label class="flex items-center justify-between p-6 border-[3px] border-slate-200 rounded-[28px] cursor-pointer hover:border-black hover:bg-slate-50 transition-all" data-type="cod">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-6 h-6 rounded-full border-[3px] border-slate-300 flex items-center justify-center bg-white"></div>
+                                    <div class="w-6 h-6 rounded-full border-[3px] border-slate-300 flex items-center justify-center bg-white indicator"></div>
                                     <div class="flex flex-col">
                                         <span class="font-black text-lg uppercase tracking-tight">Cash on Delivery</span>
                                         <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Pay upon arrival</span>
@@ -171,7 +171,7 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                         <div class="space-y-6 mb-10 max-h-[400px] overflow-y-auto pr-4">
                             <?php 
                             // Re-fetch items for side view
-                            $sql = "SELECT c.*, p.name, p.base_price, p.discounted_price, 
+                            $sql = "SELECT c.id as cart_id, c.quantity, c.product_id, p.name, p.base_price, p.discounted_price, 
                                     (SELECT image_path FROM product_images WHERE product_id = p.id LIMIT 1) as image 
                                     FROM cart c JOIN products p ON c.product_id = p.id 
                                     WHERE " . ($user_id ? "c.user_id = ?" : "c.session_id = ?");
@@ -182,12 +182,17 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                                 $subtotal += $price * $i['quantity'];
                             ?>
                             <div class="flex gap-4">
-                                <div class="w-16 h-16 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0">
+                                <div class="w-16 h-16 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0 border-[2px] border-black">
                                     <img src="<?php echo $i['image'] ?? 'https://via.placeholder.com/100'; ?>" class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-grow">
-                                    <h4 class="font-bold text-sm mb-1 truncate w-40"><?php echo $i['name']; ?></h4>
-                                    <p class="text-xs text-slate-400">Qty: <?php echo $i['quantity']; ?></p>
+                                    <h4 class="font-bold text-sm mb-1 truncate w-32"><?php echo $i['name']; ?></h4>
+                                    <!-- Qty Control -->
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="Cart.updateQuantity(<?php echo $i['cart_id']; ?>, <?php echo $i['quantity'] - 1; ?>)" class="w-5 h-5 border border-black rounded flex items-center justify-center text-[10px] hover:bg-black hover:text-white transition-colors">-</button>
+                                        <span class="text-xs font-black"><?php echo $i['quantity']; ?></span>
+                                        <button onclick="Cart.updateQuantity(<?php echo $i['cart_id']; ?>, <?php echo $i['quantity'] + 1; ?>)" class="w-5 h-5 border border-black rounded flex items-center justify-center text-[10px] hover:bg-black hover:text-white transition-colors">+</button>
+                                    </div>
                                 </div>
                                 <p class="font-bold text-sm"><?php echo format_price($price * $i['quantity']); ?></p>
                             </div>
@@ -245,6 +250,27 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
 </main>
 
 <script>
+// Payment Selection Logic
+const paymentOptions = document.querySelectorAll('#payment-options label');
+paymentOptions.forEach(option => {
+    option.addEventListener('click', () => {
+        // Reset all
+        paymentOptions.forEach(opt => {
+            opt.className = 'flex items-center justify-between p-6 border-[3px] border-slate-200 rounded-[28px] cursor-pointer hover:border-black hover:bg-slate-50 transition-all';
+            opt.querySelector('.indicator').className = 'w-6 h-6 rounded-full border-[3px] border-slate-300 flex items-center justify-center bg-white indicator';
+            opt.querySelector('.indicator').innerHTML = '';
+        });
+
+        // Set Active
+        option.className = 'flex items-center justify-between p-6 border-[3px] border-black bg-neon-yellow/10 rounded-[28px] cursor-pointer shadow-[4px_4px_0px_0px_#000] relative overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#000]';
+        option.querySelector('.indicator').className = 'w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center bg-white indicator';
+        option.querySelector('.indicator').innerHTML = '<div class="w-3 h-3 bg-black rounded-full"></div>';
+        
+        // Check radio
+        option.querySelector('input[type="radio"]').checked = true;
+    });
+});
+
 document.getElementById('complete-order-btn').addEventListener('click', function() {
     const btn = this;
     const originalText = btn.innerHTML;
@@ -326,4 +352,5 @@ document.getElementById('apply-coupon').addEventListener('click', function() {
 });
 </script>
 
-<?php require_once 'includes/footer.php'; ?>
+
+

@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['full_name'] = $user['full_name'];
         $_SESSION['role'] = $user['role'];
         
+        merge_cart($user['id']);
+        
         if (is_admin()) redirect('admin/index.php');
         redirect('user/index.php');
     } else {
