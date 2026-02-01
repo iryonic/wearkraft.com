@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ensure opacity implies visibility in Tailwind context if needed, but translate handles visibility mostly for drawer
             // For overlay:
             cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.classList.add('overflow-hidden'); // This is safer than 'no-scroll' class if CSS missing
+            // document.body.classList.add('overflow-hidden'); // Removed to prevent mobile header glitch
             if (window.Cart && typeof window.Cart.refreshSideCart === 'function') {
                 window.Cart.refreshSideCart();
             }
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sideCart.classList.add('translate-x-full');
             // Add pointer-events-none back when closing to prevent blocking
             cartOverlay.classList.add('opacity-0', 'pointer-events-none');
-            document.body.classList.remove('overflow-hidden');
+            // document.body.classList.remove('overflow-hidden');
         }
     };
 
@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (open) {
             mobileMenuDrawer.classList.remove('-translate-x-full');
             mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.classList.add('overflow-hidden');
+            // document.body.classList.add('overflow-hidden');
         } else {
             mobileMenuDrawer.classList.add('-translate-x-full');
             mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
-            document.body.classList.remove('overflow-hidden');
+            // document.body.classList.remove('overflow-hidden');
         }
     }
 
@@ -96,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!searchModal) return;
         if (open) {
             searchModal.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.classList.add('overflow-hidden');
+            // document.body.classList.add('overflow-hidden');
             setTimeout(() => searchInput && searchInput.focus(), 300);
         } else {
             searchModal.classList.add('opacity-0', 'pointer-events-none');
-            document.body.classList.remove('overflow-hidden');
+            // document.body.classList.remove('overflow-hidden');
         }
     }
 
