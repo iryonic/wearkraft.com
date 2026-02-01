@@ -1,0 +1,326 @@
+/* WearKraft.com Custom Styles - Gen-Z Brutalism */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary: #FF6B00;
+    /* Safety Orange */
+    --primary-dark: #E66000;
+    --accent: #FF3366;
+    /* Neon Pink */
+    --neon-yellow: #FACC15;
+    --neon-green: #22C55E;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --border-width: 3px;
+    --shadow-chunky: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--background);
+    color: #000;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    transition: background 0.3s ease;
+}
+
+body.no-scroll {
+    overflow: hidden !important;
+    height: 100vh;
+}
+
+/* Background Patterns */
+.bg-grid {
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 2px, transparent 2px);
+    background-size: 32px 32px;
+}
+
+.bg-check {
+    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+}
+
+/* Chunky Brutalism */
+.chunky-card {
+    background: white;
+    border: var(--border-width) solid #000;
+    box-shadow: var(--shadow-chunky);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chunky-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.chunky-btn {
+    border: var(--border-width) solid #000;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+    transition: all 0.1s;
+}
+
+.chunky-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+}
+
+/* Glassmorphism Evolution */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--border-width) solid #000;
+}
+
+/* App-like Header */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: all 0.3s ease;
+}
+
+.sticky-header.scrolled {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom Navigation (Mobile) - FORCED FIXED */
+.mobile-nav {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    right: 20px !important;
+    height: 75px !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    background: #ffffff !important;
+    border: var(--border-width) solid #000000 !important;
+    box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1) !important;
+    border-radius: 20px !important;
+    z-index: 9999 !important;
+    padding: 0 10px !important;
+}
+
+@media (min-width: 1024px) {
+    .mobile-nav {
+        display: none !important;
+    }
+}
+
+/* Mega Menu Dropdown */
+.mega-menu {
+    position: absolute;
+    top: 100%;
+    background: white;
+    border-top: 3px solid black;
+    border-bottom: 5px solid black;
+    transform: translateY(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 40;
+    padding: 4rem 0;
+}
+
+.group:hover .mega-menu {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.mega-menu-item {
+    border: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.mega-menu-item:hover {
+    background: var(--neon-yellow);
+    border-color: black;
+    transform: rotate(-1deg) scale(1.05);
+}
+
+/* Ensure images don't get squashed */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Infinite Marquee */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    background: var(--neon-yellow);
+    color: #000;
+    border-bottom: 3px solid #000;
+    padding: 12px 0;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.marquee-content {
+    display: inline-block;
+    animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Fluid Typography */
+.text-hero {
+    font-size: clamp(3rem, 15vw, 9rem);
+    line-height: 0.85;
+}
+
+.text-section-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 0.9;
+}
+
+/* Sidebar Cart */
+.side-cart {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background: white;
+    z-index: 10000;
+    border-left: 3px solid black;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+.side-cart.open {
+    transform: translateX(0);
+}
+
+.side-cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.side-cart-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Search Modal */
+.search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.search-modal.open {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.search-input-brutal {
+    width: 100%;
+    background: transparent;
+    border-bottom: 3px solid black;
+    font-size: clamp(2rem, 8vw, 6rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 2rem 0;
+    outline: none;
+}
+
+/* Skeleton Loader */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Page Transitions */
+.fade-up {
+    animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Utility for dynamic text */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--neon-yellow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Section Spacing */
+.section-py {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+    .section-py {
+        padding-top: 8rem;
+        padding-bottom: 8rem;
+    }
+}
+
+/* Swiper Adjustments */
+.swiper-button-next,
+.swiper-button-prev {
+    display: none !important;
+    /* Using custom buttons */
+}
