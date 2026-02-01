@@ -20,12 +20,17 @@ const Cart = {
                     this.updateCount(data.total_count);
 
                     // Open sidebar cart automatically
-                    const sideCart = document.getElementById('side-cart');
-                    const overlay = document.getElementById('cart-overlay');
-                    if (sideCart && overlay) {
-                        sideCart.classList.add('open');
-                        overlay.classList.add('open');
-                        document.body.classList.add('no-scroll');
+                    if (window.toggleCart) {
+                        window.toggleCart(true);
+                    } else {
+                        // Fallback if main.js is late
+                        const sideCart = document.getElementById('side-cart');
+                        const overlay = document.getElementById('cart-overlay');
+                        if (sideCart && overlay) {
+                            sideCart.classList.remove('translate-x-full', 'pointer-events-none');
+                            overlay.classList.remove('opacity-0', 'pointer-events-none');
+                            document.body.classList.add('overflow-hidden');
+                        }
                     }
                     this.refreshSideCart();
 

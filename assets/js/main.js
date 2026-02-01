@@ -38,26 +38,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartOverlay = document.getElementById('cart-overlay');
     const closeCartBtn = document.getElementById('close-cart');
 
-    function toggleCart(open = true) {
+    window.toggleCart = function (open = true) {
         if (!sideCart || !cartOverlay) return;
         if (open) {
-            sideCart.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+            sideCart.classList.remove('translate-x-full', 'pointer-events-none');
+            // Ensure opacity implies visibility in Tailwind context if needed, but translate handles visibility mostly for drawer
+            // For overlay:
             cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.classList.add('overflow-hidden');
+            document.body.classList.add('overflow-hidden'); // This is safer than 'no-scroll' class if CSS missing
             if (window.Cart && typeof window.Cart.refreshSideCart === 'function') {
                 window.Cart.refreshSideCart();
             }
         } else {
             sideCart.classList.add('translate-x-full');
+            // Add pointer-events-none back when closing to prevent blocking
             cartOverlay.classList.add('opacity-0', 'pointer-events-none');
             document.body.classList.remove('overflow-hidden');
         }
-    }
+    };
 
-    if (cartBtn) cartBtn.addEventListener('click', (e) => { e.preventDefault(); toggleCart(true); });
-    if (cartBtnMobile) cartBtnMobile.addEventListener('click', (e) => { e.preventDefault(); toggleCart(true); });
-    if (closeCartBtn) closeCartBtn.addEventListener('click', () => toggleCart(false));
-    if (cartOverlay) cartOverlay.addEventListener('click', () => toggleCart(false));
+    if (cartBtn) cartBtn.addEventListener('click', (e) => { e.preventDefault(); window.toggleCart(true); });
+    if (cartBtnMobile) cartBtnMobile.addEventListener('click', (e) => { e.preventDefault(); window.toggleCart(true); });
+    if (closeCartBtn) closeCartBtn.addEventListener('click', () => window.toggleCart(false));
+    if (cartOverlay) cartOverlay.addEventListener('click', () => window.toggleCart(false));
 
     // Mobile Menu Toggles
     const openMenuBtn = document.getElementById('open-mobile-menu');
