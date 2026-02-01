@@ -134,16 +134,16 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                                 <input type="radio" name="payment" value="razorpay" checked class="hidden">
                             </label>
 
-                            <label class="flex items-center justify-between p-6 border-[3px] border-slate-200 rounded-[28px] cursor-pointer hover:border-black hover:bg-slate-50 transition-all opacity-60 hover:opacity-100">
+                            <label class="flex items-center justify-between p-6 border-[3px] border-slate-200 rounded-[28px] cursor-pointer hover:border-black hover:bg-slate-50 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-6 h-6 rounded-full border-[3px] border-slate-300 flex items-center justify-center bg-white"></div>
                                     <div class="flex flex-col">
-                                        <span class="font-black text-lg uppercase tracking-tight text-slate-400">Cash on Delivery</span>
-                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Unavailable for this order</span>
+                                        <span class="font-black text-lg uppercase tracking-tight">Cash on Delivery</span>
+                                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Pay upon arrival</span>
                                     </div>
                                 </div>
-                                <i data-lucide="truck" class="w-6 h-6 text-slate-300"></i>
-                                <input type="radio" name="payment" value="cod" disabled class="hidden">
+                                <i data-lucide="truck" class="w-6 h-6 text-black"></i>
+                                <input type="radio" name="payment" value="cod" class="hidden">
                             </label>
                         </div>
                     </div>
@@ -195,9 +195,20 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                         </div>
 
                         <div class="space-y-4 pt-6 border-t border-slate-100">
+                            <!-- Coupon Input -->
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" id="coupon-code" placeholder="PROMO CODE" class="w-full bg-slate-50 border-[2px] border-black rounded-xl px-4 py-3 font-black uppercase text-sm tracking-widest focus:outline-none focus:bg-white dashed-placeholder">
+                                <button type="button" id="apply-coupon" class="bg-black text-white px-6 font-bold uppercase text-xs tracking-widest rounded-xl hover:bg-primary transition-colors">Apply</button>
+                            </div>
+                            <!-- Feedback area for discount -->
+                            <div id="discount-row" class="flex justify-between text-green-600 text-sm hidden font-bold uppercase tracking-widest">
+                                <span>Discount</span>
+                                <span id="discount-amount">-₹0.00</span>
+                            </div>
+
                             <div class="flex justify-between text-slate-500 text-sm">
                                 <span>Subtotal</span>
-                                <span class="font-bold text-black"><?php echo format_price($subtotal); ?></span>
+                                <span class="font-bold text-black" id="summary-subtotal"><?php echo format_price($subtotal); ?></span>
                             </div>
                             <div class="flex justify-between text-slate-500 text-sm">
                                 <span>Shipping</span>
@@ -205,7 +216,7 @@ $user = $user_id ? db_fetch_one("SELECT * FROM users WHERE id = ?", [$user_id]) 
                             </div>
                             <div class="flex justify-between pt-6">
                                 <span class="font-bold text-lg">Total Amount</span>
-                                <span class="font-black text-2xl text-primary"><?php echo format_price($subtotal * 1.18); ?></span>
+                                <span class="font-black text-2xl text-primary" id="summary-total"><?php echo format_price($subtotal * 1.18); ?></span>
                             </div>
                         </div>
                     </div>
@@ -276,6 +287,42 @@ document.getElementById('complete-order-btn').addEventListener('click', function
         btn.innerHTML = originalText;
         btn.disabled = false;
     });
+});
+// Coupon Logic (Frontend Simulation)
+document.getElementById('apply-coupon').addEventListener('click', function() {
+    const code = document.getElementById('coupon-code').value.trim();
+    const btn = this;
+    if(!code) return;
+
+    btn.innerText = '...';
+    // Here we would AJAX check validity. For now, let's simulate a basic valid code.
+    setTimeout(() => {
+        if(code.toUpperCase() === 'WEARKRAFT10') {
+            const subtotalText = document.getElementById('summary-subtotal').innerText.replace('₹','').replace(',','');
+            const subtotal = parseFloat(subtotalText);
+            const discount = subtotal * 0.10;
+            const newTotal = (subtotal - discount) * 1.18; // Re-applying tax logic if needed, or just discount off total
+            
+            document.getElementById('discount-row').classList.remove('hidden');
+            document.getElementById('discount-amount').innerText = '-₹' + discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('summary-total').innerText = '₹' + newTotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            
+            btn.innerText = 'Applied!';
+            btn.classList.add('bg-green-500');
+            btn.disabled = true;
+            
+            // Add hidden input so backend knows
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'coupon_code';
+            hiddenInput.value = code;
+            document.getElementById('complete-order-btn').parentElement.appendChild(hiddenInput);
+
+        } else {
+            alert('Invalid coupon code');
+            btn.innerText = 'Apply';
+        }
+    }, 500);
 });
 </script>
 
