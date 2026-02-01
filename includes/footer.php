@@ -61,7 +61,7 @@
                     &copy; <?php echo date('Y'); ?> WearKraft. Crafted With <i data-lucide="heart" class="w-4 h-4 fill-red-500 inline"></i> By Creators
                 </div>
                 <div class="flex items-center gap-8">
-                    <a href="#" class="font-black text-xs uppercase tracking-widest hover:text-primary">Privacy</a>
+                    <a href="<?php echo SITE_URL; ?>/privacy-policy.php" class="font-black text-xs uppercase tracking-widest hover:text-primary">Privacy</a>
                     <a href="#" class="font-black text-xs uppercase tracking-widest hover:text-primary">Terms</a>
                 </div>
             </div>
