@@ -3,12 +3,23 @@
 require_once 'security.php';
 secure_session_start();
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'wearkraft_db');
 
-define('SITE_URL', 'http://localhost/wearkraft.com');
+if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1') {
+    // Localhost
+    define('DB_HOST', 'localhost');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+    define('DB_NAME', 'wearkraft_db');
+    define('SITE_URL', 'http://localhost/wearkraft.com');
+} else {
+    // Live Server
+    define('DB_HOST', 'localhost');
+    define('DB_USER', 'u167160735_wearkraft');
+    define('DB_PASS', 'Wearkraft@1234#');
+    define('DB_NAME', 'u167160735_wearkraft');
+    define('SITE_URL', 'http://wearkraft.irfanmanzoor.in');
+}
+
 define('SITE_NAME', 'WearKraft.com');
 
 // Error Reporting

@@ -67,7 +67,7 @@
                 </button>
 
                 <!-- Logo -->
-                <a href="<?php echo SITE_URL; ?>" class="text-3xl font-black tracking-tighter uppercase group flex items-center gap-2">
+                <a href="<?php echo SITE_URL; ?>" class="text-xl lg:text-3xl font-black tracking-tighter uppercase group flex items-center gap-2">
                     <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform">
                         <i data-lucide="zap" class="w-6 h-6 fill-current"></i>
                     </div>

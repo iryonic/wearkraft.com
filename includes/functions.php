@@ -75,4 +75,33 @@ function get_active_reels($limit = 10) {
 function get_active_testimonials($limit = 6) {
     return db_fetch_all("SELECT * FROM testimonials WHERE status = 'active' ORDER BY created_at DESC LIMIT ?", [$limit]);
 }
+
+function get_product_reviews($product_id) {
+    return db_fetch_all("
+        SELECT r.*, u.full_name, u.email 
+        FROM product_reviews r 
+        JOIN users u ON r.user_id = u.id 
+        WHERE r.product_id = ? 
+        ORDER BY r.created_at DESC
+    ", [$product_id]);
+}
+
+function get_average_rating($product_id) {
+    $result = db_fetch_one("SELECT AVG(rating) as avg_rating, COUNT(*) as count FROM product_reviews WHERE product_id = ?", [$product_id]);
+    return [
+        'average' => round($result['avg_rating'] ?? 0, 1),
+        'count' => $result['count']
+    ];
+}
+
+function get_similar_products($category_id, $exclude_id, $limit = 4) {
+    return db_fetch_all("
+        SELECT p.*, pi.image_path as main_image 
+        FROM products p 
+        LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+        WHERE p.category_id = ? AND p.id != ? AND p.status = 'active'
+        ORDER BY rand() 
+        LIMIT ?
+    ", [$category_id, $exclude_id, $limit]);
+}
 ?>

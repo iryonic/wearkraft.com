@@ -86,7 +86,7 @@ const Cart = {
                         </div>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="font-black text-sm italic">₹${parseFloat(item.discounted_price || item.base_price).toLocaleString()}</span>
+                        <span class="font-black text-sm italic">₹${parseFloat(item.effective_price || item.discounted_price || item.base_price).toLocaleString()}</span>
                         <button onclick="Cart.removeFromCart(${item.cart_id})" class="text-[10px] font-bold uppercase tracking-widest text-accent hover:underline">Remove</button>
                     </div>
                 </div>

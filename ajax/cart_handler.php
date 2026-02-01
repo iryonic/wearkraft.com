@@ -40,8 +40,28 @@ if ($action === 'get_cart') {
     
     $items = db_fetch_all($sql, [$user_id ?: $session_id]);
     $subtotal = 0;
-    foreach($items as $item) {
-        $subtotal += ($item['discounted_price'] ?: $item['base_price']) * $item['quantity'];
+    
+    foreach($items as &$item) {
+        // Default price
+        $price = $item['discounted_price'] ?: $item['base_price'];
+        
+        // Check for bulk pricing
+        $bulk_rules = db_fetch_all("SELECT * FROM bulk_pricing WHERE product_id = ? ORDER BY min_qty DESC", [$item['id']]);
+        
+        foreach($bulk_rules as $rule) {
+            if ($item['quantity'] >= $rule['min_qty'] && ($rule['max_qty'] === null || $item['quantity'] <= $rule['max_qty'])) {
+                if ($rule['fixed_price']) {
+                    $price = $rule['fixed_price'];
+                } elseif ($rule['discount_percentage']) {
+                    $original_price = $item['discounted_price'] ?: $item['base_price'];
+                    $price = $original_price * (1 - ($rule['discount_percentage'] / 100));
+                }
+                break; // Apply best match (highest min_qty first due to DESC order)
+            }
+        }
+        
+        $item['effective_price'] = $price;
+        $subtotal += $price * $item['quantity'];
     }
 
     echo json_encode([

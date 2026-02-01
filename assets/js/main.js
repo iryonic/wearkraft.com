@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toast Notification System
     window.showToast = (message, type = 'success') => {
         const toast = document.createElement('div');
-        toast.className = `fixed top-10 left-1/2 -translate-x-1/2 z-[10000] px-8 py-4 border-[3px] border-black rounded-2xl font-black uppercase text-xs tracking-widest shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 translate-y-[-100px] opacity-0`;
+        toast.className = `fixed top-24 left-1/2 -translate-x-1/2 z-[10000] px-8 py-4 border-[3px] border-black rounded-2xl font-black uppercase text-xs tracking-widest shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 translate-y-[-100px] opacity-0 pointer-events-none`;
 
         if (type === 'success') {
             toast.classList.add('bg-neon-green', 'text-black');
